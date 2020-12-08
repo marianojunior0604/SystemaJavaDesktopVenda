@@ -213,4 +213,15 @@ public class FuncaoCarne {
         }
     }
     
+    public void excluirCarnes(int idVenda){
+        String sql = "DELETE FROM `dba.carne` WHERE `dba.venda_idVenda` = ?";
+        try {
+            conexao = mc.conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, idVenda);
+            pst.execute();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: \n" + e + "\nFalha ao acessar o banco de dados", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
+    }
 }

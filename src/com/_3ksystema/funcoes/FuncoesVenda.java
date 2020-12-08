@@ -230,7 +230,7 @@ public class FuncoesVenda {
     }
 
     public Venda pesquisaClienteData(String dataVenda, int idCliente) {
-        String sql = "SELECT `idVenda`, `dba.clientes_id_cliente` FROM `dba.venda` WHERE `dataVenda` = ? AND `dba.clientes_id_cliente` = ?";
+        String sql = "SELECT * FROM `dba.venda` WHERE `dataVenda` = ? AND `dba.clientes_id_cliente` = ?";
         try {
             conexao = mc.conector();
             pst = conexao.prepareStatement(sql);
@@ -240,6 +240,12 @@ public class FuncoesVenda {
             if (rs.next()) {
                 venda.setIdVenda(rs.getInt(1));
                 venda.setCliente(rs.getInt(2));
+                venda.setValorVenda(rs.getDouble(3));
+                venda.setDataVenda(rs.getString(4));
+                venda.setTipoVenda(rs.getString(5));
+                venda.setQtdParcelas(rs.getInt(6));
+                venda.setValorEntrada(rs.getDouble(7));
+                venda.setDataPgtoParcela(rs.getString(8));
             }
             return venda;
         } catch (ClassNotFoundException | SQLException e) {
@@ -249,7 +255,7 @@ public class FuncoesVenda {
     }
     
     public ArrayList<String> pesquisaVendasData(String data){
-        String sql = "SELECT cliente.`nome_cliente` AS \"Nome Cliente\" FROM `dba.venda` AS venda INNER JOIN `dba.clientes` AS cliente WHERE venda.`dataVenda` = ?";
+        String sql = "SELECT cliente.`nome_cliente` AS \"Nome Cliente\" FROM `dba.venda` AS venda INNER JOIN `dba.clientes` AS cliente WHERE venda.`dataVenda` = ? AND venda.`dba.clientes_id_cliente` = cliente.`id_cliente`";
         ArrayList<String> listas = new ArrayList();
         try {
             conexao = mc.conector();
@@ -260,7 +266,7 @@ public class FuncoesVenda {
                 do{
                     String vend = new String();
                     vend = (rs.getString(1));
-                    listas.add(vend + "\n");
+                    listas.add(vend);
                 }while(rs.next());
             }
             return listas;

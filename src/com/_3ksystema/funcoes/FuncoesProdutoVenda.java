@@ -89,7 +89,7 @@ public class FuncoesProdutoVenda {
             }
             return pv;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error: \n" + e + "Falha ao acessar o banco de dados", "Alerta", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error: \n" + e + "\nFalha ao acessar o banco de dados", "Alerta", JOptionPane.WARNING_MESSAGE);
             return null;
         }
     }
@@ -107,7 +107,7 @@ public class FuncoesProdutoVenda {
             pst.setInt(1, idVenda);
             pst.execute();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error: \n" + e + "Falha ao acessar o banco de dados", "Alerta", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error: \n" + e + "\nFalha ao acessar o banco de dados", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
     }
     

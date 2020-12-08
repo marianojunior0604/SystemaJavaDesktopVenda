@@ -6,8 +6,22 @@
 package com._3ksystema.telas;
 
 import com._3ksystema.classes.FormataData;
+import com._3ksystema.classes.VendasDeleteTableModel;
+import com._3ksystema.funcoes.FuncaoCarne;
+import com._3ksystema.funcoes.FuncoesCliente;
+import com._3ksystema.funcoes.FuncoesProduto;
+import com._3ksystema.funcoes.FuncoesProdutoVenda;
+import com._3ksystema.funcoes.FuncoesSaida;
 import com._3ksystema.funcoes.FuncoesVenda;
+import com._3ksystema.modelos.Cliente;
+import com._3ksystema.modelos.Produto;
+import com._3ksystema.modelos.ProdutosVenda;
+import com._3ksystema.modelos.Saidas;
+import com._3ksystema.modelos.Venda;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,15 +30,42 @@ import java.util.ArrayList;
 public class DeletaVenda extends javax.swing.JInternalFrame {
     
     private FuncoesVenda fv = new FuncoesVenda();
+    private Venda venda = new Venda();
     private FormataData fd = new FormataData();
-
+    private VendasDeleteTableModel vdtm = new VendasDeleteTableModel();
+    private Cliente cliente = new Cliente();
+    private FuncoesCliente fc = new FuncoesCliente();
+    private FuncoesSaida fs = new FuncoesSaida();
+    private Saidas saida = new Saidas();
+    private FuncaoCarne fca = new FuncaoCarne();
+    private FuncoesProdutoVenda fpv = new FuncoesProdutoVenda();
+    private ArrayList<ProdutosVenda> pvs = new ArrayList();
+    private FuncoesProduto fp = new FuncoesProduto();
+    private Produto produto;
+    
     /**
      * Creates new form DeletaVenda
      */
     public DeletaVenda() {
         initComponents();
+        preencherTabela();
+    }
+    
+    private void preencherTabela(){
+        tblVendas.setModel(vdtm);
     }
 
+    private void sair(){
+        int sair = JOptionPane.showConfirmDialog(null, "Deseja sair da tela de deletar Vendas?", "Sair", JOptionPane.YES_NO_OPTION);
+        if (sair == JOptionPane.YES_OPTION) {
+            this.dispose();
+        }
+    }
+    
+    private String pegarCliente(){
+        return tblVendas.getModel().getValueAt(tblVendas.getSelectedRow(), 0).toString();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,13 +117,28 @@ public class DeletaVenda extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblVendas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblVendasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblVendas);
 
         btnSair.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         btnDeletar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnDeletar.setText("Deletar");
+        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,11 +188,57 @@ public class DeletaVenda extends javax.swing.JInternalFrame {
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         // TODO add your handling code here:
         ArrayList<String> listas = fv.pesquisaVendasData(fd.formataData(txtDataPesquisa.getText()));
-        for (String lista : listas) {
-            System.out.println(lista);
-        }
+        vdtm.setLinhas(listas);
+        preencherTabela();
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        // TODO add your handling code here:
+        sair();
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void tblVendasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVendasMouseClicked
+        try {
+            // TODO add your handling code here:
+            cliente = fc.pesquisaCliente(pegarCliente());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DeletaVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_tblVendasMouseClicked
+
+    private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
+        // TODO add your handling code here:
+        venda = fv.pesquisaClienteData(fd.formataData(txtDataPesquisa.getText()), cliente.getId_Cliente());
+        int deleta = JOptionPane.showConfirmDialog(null, "Deseja Excluir a venda selecionada?", "Alerta", JOptionPane.YES_NO_OPTION);
+        if (deleta == JOptionPane.YES_OPTION) {
+            if (venda.getValorEntrada() > 0.0) {
+                saida.setDataSaida(fd.dataSQL());
+                saida.setValorSaida(venda.getValorEntrada());
+                saida.setNaturezaSaida("Devolução da entrada da venda do Cliente " + cliente.getNome_Cliente());
+                try {
+                    fs.salvaSaida(saida);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(DeletaVenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (venda.getTipoVenda().equals("AP")) {
+                fca.excluirCarnes(venda.getIdVenda());
+            }
+            try {
+                pvs = fpv.pesquisaProdutosVenda(venda.getIdVenda());
+                for (ProdutosVenda pv : pvs) {
+                    produto = new Produto();
+                    produto.setIdProduto(pv.getIdproduto());
+                    fp.aumentaQuantidade(pv.getQtdProdutoVenda(), produto);
+                }
+                fpv.excluiProdutosVendas(venda.getIdVenda());
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DeletaVenda.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnDeletarActionPerformed
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeletar;

@@ -123,6 +123,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblVendasMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -133,6 +136,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Sair"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSairActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnDeletar">
       <Properties>
@@ -141,6 +147,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Deletar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeletarActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
