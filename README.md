@@ -1,7 +1,1 @@
-# SystemaComercialJavaSimplesComCarn-s
-# SystemaComercialJavaSimplesComCarn-s
-# SystemaComercialJavaSimplesComCarn-s
-# SystemaComercialJavaSimplesComCarn-s
-# SystemaComercialJavaSimplesComCarn-s
-# SystemaComercialJavaSimples
-# SystemaComercialJavaSimples
+#Sistema comercial em Java e MySQL
