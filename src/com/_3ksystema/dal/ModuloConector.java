@@ -39,11 +39,11 @@ public class ModuloConector {
     private Path cmnEnder = Paths.get(camBanco);
     private Path cmnBinSQL = Paths.get(camSQL);
     private boolean sucesso = false;
-    /*private String result;
+    private String result;
     private Process processo;
     private BufferedReader input;
     private StringBuffer cmdOut = new StringBuffer();
-    private int numberOfoutline = 0;*/
+    private int numberOfoutline = 0;
 
     private String CapturaEndeConfi() {
         try {
@@ -131,10 +131,31 @@ public class ModuloConector {
 
     public void fazBackup(String enderecoSalvar) throws IOException, InterruptedException {
         String mysqlBin = "cd " + capturaBinSQL() + "\\";
-        String comando = "mysqldump -u " + CapturaUserBanco() + " -p " + CapturaNomeBanco() + " > " + enderecoSalvar + "\n";
+        String comando = "mysqldump.exe -u " + CapturaUserBanco() + " -p " + CapturaNomeBanco() + " > " + enderecoSalvar + "\n";
         //System.out.println("Comando do diretorio: " + mysqlBin + "\nComando para fazer backup: " + comando);
         String fullcomand = mysqlBin + "\n" + comando;
-        /**/
+        System.out.println(fullcomand);
+        try {
+            processo = Runtime.getRuntime().exec(new String[] { "cmd.exe", comando });
+            input = new BufferedReader(new InputStreamReader(processo.getInputStream()));
+            while((comando = input.readLine()) != null){
+                if (numberOfoutline > 0) {
+                    cmdOut.append("\n");
+                }
+                cmdOut.append(comando);
+                numberOfoutline++;
+            }
+            result = cmdOut.toString();
+            sucesso = true;
+            input.close();
+        } catch (IOException e) {
+            result = String.format("Falha ao executar o comando %s. Erro %s", comando, e.toString());
+        }
+        //if (!sucesso) {
+            new IOException(result);
+        //}
+        JOptionPane.showMessageDialog(null, "Banco de dados Salvo com sucesso", "OK", 1);
+        /*
         try {
             Process processo = Runtime.getRuntime().exec(fullcomand);
             StringBuilder saida = new StringBuilder();
@@ -163,14 +184,14 @@ public class ModuloConector {
             sucesso = true;
             input.close();
             IOException ioException = new IOException(result);
-            JOptionPane.showMessageDialog(null, "banco de dados salvo com sucesso", "comando executado", JOptionPane.INFORMATION_MESSAGE);*/
+            JOptionPane.showMessageDialog(null, "banco de dados salvo com sucesso", "comando executado", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             //result = String.format("Falha ao executar o comando %s. Erro %s", comando, e.toString());
         }
         if (!sucesso) {
             
         }
-        
+        */
 
     }
 }

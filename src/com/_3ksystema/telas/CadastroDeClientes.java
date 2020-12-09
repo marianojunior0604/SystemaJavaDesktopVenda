@@ -181,6 +181,9 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
         if (deleta == JOptionPane.YES_OPTION) {
             fc.excluirCliente(cliente.getId_Cliente());
             limpaCampos();
+            btnExcluir.setEnabled(false);
+            btnEditar.setEnabled(false);
+            btnSalvar.setEnabled(true);
         }
     }
 

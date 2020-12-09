@@ -120,24 +120,29 @@ public class TelaVendas extends javax.swing.JInternalFrame {
     private void adcionaProdutoVenda() throws ClassNotFoundException {
         ProdutosVenda produtoVenda = new ProdutosVenda();
         ProdutoListaVenda plv = new ProdutoListaVenda();
-        String qtdProd = JOptionPane.showInputDialog(null, "Digite a quantidade que o cliente ira comprar", "Quantidade da compra?", JOptionPane.INFORMATION_MESSAGE);
-        int qtdProdutosVendido = Integer.parseInt(qtdProd);
-        int codigoProduto;
-        produto = fp.pesquisaProduto(tblProdutosLoja.getModel().getValueAt(tblProdutosLoja.getSelectedRow(), 0).toString());
-        codigoProduto = produto.getIdProduto();
-        int qtdEstoque = produto.getQtdEstoqueProduto();
-        if (qtdProdutosVendido <= qtdEstoque) {
-            produtoVenda.setIdproduto(codigoProduto);
-            produtoVenda.setQtdProdutoVenda(qtdProdutosVendido);
-            produtosVenda.add(produtoVenda);
-            plv.setNomeProduto(produto.getNomeProduto());
-            plv.setPrecoProduto(produto.getValorVendaProduto());
-            plv.setQtdProdutoComprado(qtdProdutosVendido);
-            plv.setPrecoTotal(produto.getValorVendaProduto(), qtdProdutosVendido);
-            prodVenda.add(plv);
-            pvtm.addProduto(plv);
-        } else {
-            JOptionPane.showMessageDialog(null, "A quantidade digitada é superior a quantidade em estoque", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        String qtdProd = JOptionPane.showInputDialog(null, "Digite a quantidade que o cliente ira comprar", "Quantidade da compra?", JOptionPane.PLAIN_MESSAGE);
+        int qtdProdutosVendido = 0;
+        System.out.println(qtdProd);
+        if (qtdProd != null) {
+            qtdProdutosVendido = Integer.parseInt(qtdProd);
+
+            int codigoProduto;
+            produto = fp.pesquisaProduto(tblProdutosLoja.getModel().getValueAt(tblProdutosLoja.getSelectedRow(), 0).toString());
+            codigoProduto = produto.getIdProduto();
+            int qtdEstoque = produto.getQtdEstoqueProduto();
+            if (qtdProdutosVendido <= qtdEstoque) {
+                produtoVenda.setIdproduto(codigoProduto);
+                produtoVenda.setQtdProdutoVenda(qtdProdutosVendido);
+                produtosVenda.add(produtoVenda);
+                plv.setNomeProduto(produto.getNomeProduto());
+                plv.setPrecoProduto(produto.getValorVendaProduto());
+                plv.setQtdProdutoComprado(qtdProdutosVendido);
+                plv.setPrecoTotal(produto.getValorVendaProduto(), qtdProdutosVendido);
+                prodVenda.add(plv);
+                pvtm.addProduto(plv);
+            } else {
+                JOptionPane.showMessageDialog(null, "A quantidade digitada é superior a quantidade em estoque", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
