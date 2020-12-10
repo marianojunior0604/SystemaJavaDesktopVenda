@@ -191,7 +191,6 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNomePesquisaKeyPressed"/>
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNomePesquisaKeyReleased"/>
               </Events>
             </Component>
@@ -660,6 +659,9 @@
                       <Font name="Tahoma" size="14" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNomeClienteKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtApelidoCliente">
                   <Properties>
@@ -667,6 +669,9 @@
                       <Font name="Tahoma" size="14" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtApelidoClienteKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtNomeMaeCliente">
                   <Properties>
@@ -674,6 +679,9 @@
                       <Font name="Tahoma" size="14" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNomeMaeClienteKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtNomePaiCliente">
                   <Properties>
@@ -681,6 +689,9 @@
                       <Font name="Tahoma" size="14" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNomePaiClienteKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtRuaCasaCliente">
                   <Properties>
@@ -723,6 +734,9 @@
                       <Font name="Tahoma" size="14" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNomeConjujeClienteKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtProfiss&#xe3;oCliente">
                   <Properties>
@@ -767,6 +781,9 @@
                       <Font name="Tahoma" size="14" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRendaClienteKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="jcbEstadoCivilCliente">
                   <Properties>

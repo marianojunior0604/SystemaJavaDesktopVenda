@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
-//import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -29,9 +28,9 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
     private FormataData fd = new FormataData();
     private FormataNumeros fn = new FormataNumeros();
     private ArrayList<Cliente> clientes = new ArrayList();
-    //private final int idPesquisado = 0;
+    private String bloqueiaNumeros = "0987654321/*-+:;?{[}]=§-_)(*&%$#@!'\"\\|";
+    private String bloqueiaLetras = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"\\|!@#$%¨&*()_-+=§ª[{`´^~}]:;Çç";
 
-    //TelaPrincipal tp = null;
     /**
      * Creates new form CadastroDeClientes
      *
@@ -45,24 +44,6 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
         txtNomeConjujeCliente.setEditable(false);
         btnEditar.setEnabled(false);
         btnExcluir.setEnabled(false);
-        //listaClientes();
-        /*txtNomeCliente.setText("Mariano");
-        txtApelidoCliente.setText("Junior");
-        txtFoneCliente.setText("86999732001");
-        txtDataNascimentoCliente.setText("06041985");
-        txtNomeMaeCliente.setText("Maria");
-        txtNomePaiCliente.setText("Francisco");
-        txtRuaCasaCliente.setText("Rua A");
-        txtNumeroCasaCliente.setText("07");
-        txtBairroCliente.setText("NS Fatima");
-        txtCidadeCliente.setText("Cocal");
-        txtRGCliente.setText("2699819");
-        txtOrgEmissorRGCliente.setText("SSP");
-        txtCPFCliente.setText("01117775348");
-        txtRendaCliente.setText("2500");
-        txtProfissãoCliente.setText("Programador");
-        txtLocalTrabalhoCliente.setText("Autonomo");
-        txtNomeConjujeCliente.setText("Rosana");*/
     }
 
     private void preencherTabela() throws ClassNotFoundException {
@@ -296,9 +277,6 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
 
         txtNomePesquisa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNomePesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNomePesquisaKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtNomePesquisaKeyReleased(evt);
             }
@@ -414,12 +392,32 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
         jLabel22.setText("Local de Trabalho:");
 
         txtNomeCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtNomeCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNomeClienteKeyTyped(evt);
+            }
+        });
 
         txtApelidoCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtApelidoCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApelidoClienteKeyTyped(evt);
+            }
+        });
 
         txtNomeMaeCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtNomeMaeCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNomeMaeClienteKeyTyped(evt);
+            }
+        });
 
         txtNomePaiCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtNomePaiCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNomePaiClienteKeyTyped(evt);
+            }
+        });
 
         txtRuaCasaCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -432,6 +430,11 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
         txtRGCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         txtNomeConjujeCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtNomeConjujeCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNomeConjujeClienteKeyTyped(evt);
+            }
+        });
 
         txtProfissãoCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -453,6 +456,11 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
 
         txtRendaCliente.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
         txtRendaCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtRendaCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRendaClienteKeyTyped(evt);
+            }
+        });
 
         jcbEstadoCivilCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jcbEstadoCivilCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Solteiro", "Casado", "União estável" }));
@@ -733,7 +741,6 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
         // Sair do Cadastro de Clientes
         int sair = JOptionPane.showConfirmDialog(null, "Deseja fechar a tela de cadastro de Clientes?", "Aviso", JOptionPane.YES_NO_OPTION, 1);
         if (sair == JOptionPane.YES_OPTION) {
-            //tp.ativaCC = true;
             this.dispose();
         }
     }//GEN-LAST:event_btnSairActionPerformed
@@ -763,7 +770,6 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
             }
         } else {
             try {
-                //ctm.setLinhas(fc.pesquisaAvancada(txtNomePesquisa.getText()));
                 tblClientes.setModel(DbUtils.resultSetToTableModel(fc.pesquisaAvancada(txtNomePesquisa.getText())));
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CadastroDeClientes.class.getName()).log(Level.SEVERE, null, ex);
@@ -774,15 +780,12 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         try {
             // TODO add your handling code here:
-            //System.out.println(tblClientes.getSelectedRow());
             cliente = fc.pesquisaCliente(tblClientes.getModel().getValueAt(tblClientes.getSelectedRow(), 0).toString());
-            //System.out.println(cliente.getNome_Cliente());
             txtNomeCliente.setText(cliente.getNome_Cliente());
             txtApelidoCliente.setText(cliente.getApelido_Cliente());
             txtFoneCliente.setText(cliente.getFone_Cliente());
             String dana = cliente.getData_Nascimento_Cliente();
             String data = fd.dataBr(dana);
-            //System.out.println(data);
             txtDataNascimentoCliente.setText(data);
             txtNomeMaeCliente.setText(cliente.getNome_Mae_Cliente());
             txtNomePaiCliente.setText(cliente.getNome_Pai_Cliente());
@@ -804,10 +807,6 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
             Logger.getLogger(CadastroDeClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_tblClientesMouseClicked
-
-    private void txtNomePesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomePesquisaKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomePesquisaKeyPressed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         try {
@@ -831,6 +830,48 @@ public class CadastroDeClientes extends javax.swing.JInternalFrame {
             Logger.getLogger(CadastroDeClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void txtNomeClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeClienteKeyTyped
+        // TODO add your handling code here:
+        if (bloqueiaNumeros.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNomeClienteKeyTyped
+
+    private void txtApelidoClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApelidoClienteKeyTyped
+        // TODO add your handling code here:
+        if (bloqueiaNumeros.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtApelidoClienteKeyTyped
+
+    private void txtNomeMaeClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeMaeClienteKeyTyped
+        // TODO add your handling code here:
+        if (bloqueiaNumeros.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNomeMaeClienteKeyTyped
+
+    private void txtNomePaiClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomePaiClienteKeyTyped
+        // TODO add your handling code here:
+        if (bloqueiaNumeros.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNomePaiClienteKeyTyped
+
+    private void txtNomeConjujeClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeConjujeClienteKeyTyped
+        // TODO add your handling code here:
+        if (bloqueiaNumeros.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNomeConjujeClienteKeyTyped
+
+    private void txtRendaClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRendaClienteKeyTyped
+        // TODO add your handling code here:
+        if (bloqueiaLetras.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtRendaClienteKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -63,6 +63,7 @@ public class TelaVendas extends javax.swing.JInternalFrame {
     private GerarOrcamento go = new GerarOrcamento();
     private Parcelas parcela = new Parcelas();
     private FuncoesParcelas fPar = new FuncoesParcelas();
+    private String bloqueiaLetras = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"\\|!@#$%¨&*()_-+=§ª[{`´^~}]:;Çç";
 
     /**
      * Creates new form TelaVendas
@@ -117,6 +118,16 @@ public class TelaVendas extends javax.swing.JInternalFrame {
         }
     }
 
+    private int bloqueiaLetrasFunc(java.awt.event.KeyEvent evt) {                                         
+        // TODO add your handling code here:
+        int qtdDesejada = 0;
+        if (bloqueiaLetras.contains(evt.getKeyChar() + "")) {
+            qtdDesejada = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite a quantidade desejada"));
+            evt.consume();
+        }
+        return qtdDesejada;
+    } 
+    
     private void adcionaProdutoVenda() throws ClassNotFoundException {
         ProdutosVenda produtoVenda = new ProdutosVenda();
         ProdutoListaVenda plv = new ProdutoListaVenda();
