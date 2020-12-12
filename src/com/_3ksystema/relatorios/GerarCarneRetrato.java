@@ -163,8 +163,8 @@ public class GerarCarneRetrato {
         }
         documento.close();
         Desktop.getDesktop().open(new File(nomeCarne));
-    }*/
-
+    }
+    */
     //Carne Janseli
     
     public void criaCarne(Venda venda) throws ClassNotFoundException, FileNotFoundException, DocumentException, IOException, SQLException {
@@ -233,7 +233,6 @@ public class GerarCarneRetrato {
         Desktop.getDesktop().open(new File(nomeCarne));
     }
 
-    
     //reimpressão Alcione
     /*
     public void reimprimirCarnes(int idCliente) throws ClassNotFoundException, FileNotFoundException, DocumentException, IOException, SQLException {
