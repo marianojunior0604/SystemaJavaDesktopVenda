@@ -144,8 +144,8 @@ public class FuncaoCarne {
                 do {                    
                     Carne c = new Carne();
                     c.setIdCarne(rs.getInt(1));
-                    c.setValorParcela(rs.getDouble(2));
-                    c.setNumeroParcela(rs.getInt(3));
+                    c.setNumeroParcela(rs.getInt(2));
+                    c.setValorParcela(rs.getDouble(3));
                     c.setDataVencimento(fd.dataBr(rs.getString(4)));
                     c.setIdCompra(rs.getInt(5));
                     c.setIdCliente(rs.getInt(6));

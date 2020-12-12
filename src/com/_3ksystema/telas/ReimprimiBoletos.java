@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
  * @author Mariano Junior
  */
 public class ReimprimiBoletos extends javax.swing.JInternalFrame {
-    
+
     Venda venda = new Venda();
     Cliente cliente = new Cliente();
     Carne carne = new Carne();
@@ -43,28 +43,36 @@ public class ReimprimiBoletos extends javax.swing.JInternalFrame {
     public ReimprimiBoletos() {
         initComponents();
     }
-    
-    private void pesquisarCarnes() throws ClassNotFoundException{
+
+    private void pesquisarCarnes() throws ClassNotFoundException {
         cliente = fc.pesquisaCliente(txtNomeCliente.getText());
-        carnes = fcn.listaCarnesNPagos(cliente.getId_Cliente());
-        lblQtdParcelas.setText(String.valueOf(carnes.size()));
-        carne = carnes.get(1);
-        DecimalFormat df = new DecimalFormat("#,###.00");
-        lblValor.setText(df.format(carne.getValorParcela()));
+        if (cliente != null) {
+            carnes = fcn.listaCarnesNPagos(cliente.getId_Cliente());
+            if (carnes != null) {
+                lblQtdParcelas.setText(String.valueOf(carnes.size()));
+                carne = carnes.get(1);
+                DecimalFormat df = new DecimalFormat("#,###.00");
+                lblValor.setText(df.format(carne.getValorParcela()));
+            } else {
+                JOptionPane.showMessageDialog(null, "Nenhum Carnê encontrado para o Cliente.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Cliente não encontrado, verifique o nome e tente novamente.");
+        }
     }
 
-    private void imprimirCarnes() throws ClassNotFoundException, DocumentException, IOException, FileNotFoundException, SQLException{
+    private void imprimirCarnes() throws ClassNotFoundException, DocumentException, IOException, FileNotFoundException, SQLException {
         cliente = fc.pesquisaCliente(txtNomeCliente.getText());
         gc.reimprimirCarnes(cliente.getId_Cliente());
     }
-    
-    private void sair(){
+
+    private void sair() {
         int sair = JOptionPane.showConfirmDialog(null, "Deseja sair da tela de reimpressão?", "Sair", JOptionPane.YES_NO_OPTION);
         if (sair == JOptionPane.YES_OPTION) {
             this.dispose();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

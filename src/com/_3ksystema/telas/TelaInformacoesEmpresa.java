@@ -176,30 +176,45 @@ public class TelaInformacoesEmpresa extends javax.swing.JInternalFrame {
     
     private void pegarParcelas(){
         parcelas = fp.pesquisaParcelas();
-        parcela = parcelas.get(0);
-        txtJurosAVista.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(1);
-        txtJurosDuasParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(2);
-        txtJurosTresParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(3);
-        txtJurosQuatroParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(4);
-        txtJurosCincoParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(5);
-        txtJurosSeisParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(6);
-        txtJurosSeteParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(7);
-        txtJurosOitoParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(8);
-        txtJurosNoveParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(9);
-        txtJurosDezParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(10);
-        txtJurosOnzeParcelas.setText(String.valueOf(parcela.getPercento()));
-        parcela = parcelas.get(11);
-        txtJurosDozeParcelas.setText(String.valueOf(parcela.getPercento()));
+        if (parcelas != null) {
+            parcela = parcelas.get(0);
+            txtJurosAVista.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(1);
+            txtJurosDuasParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(2);
+            txtJurosTresParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(3);
+            txtJurosQuatroParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(4);
+            txtJurosCincoParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(5);
+            txtJurosSeisParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(6);
+            txtJurosSeteParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(7);
+            txtJurosOitoParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(8);
+            txtJurosNoveParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(9);
+            txtJurosDezParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(10);
+            txtJurosOnzeParcelas.setText(String.valueOf(parcela.getPercento()));
+            parcela = parcelas.get(11);
+            txtJurosDozeParcelas.setText(String.valueOf(parcela.getPercento()));
+        }else{
+            txtJurosAVista.setText("0,0");
+            txtJurosDuasParcelas.setText("0,0");
+            txtJurosTresParcelas.setText("0,0");
+            txtJurosQuatroParcelas.setText("0,0");
+            txtJurosCincoParcelas.setText("0,0");
+            txtJurosSeisParcelas.setText("0,0");
+            txtJurosSeteParcelas.setText("0,0");
+            txtJurosOitoParcelas.setText("0,0");
+            txtJurosNoveParcelas.setText("0,0");
+            txtJurosDezParcelas.setText("0,0");
+            txtJurosOnzeParcelas.setText("0,0");
+            txtJurosDozeParcelas.setText("0,0");
+        }
     }
     
     /**
