@@ -212,7 +212,7 @@ public class GerarCarneRetrato {
             scel2.setFixedHeight(25);
             subTabela.addCell(scel1);
             subTabela.addCell(scel2);
-            scel1 = new PdfPCell(new Paragraph("Vencimento:\n" + fd.dataBr(carne.getDataVencimento()), fonte));
+            scel1 = new PdfPCell(new Paragraph("Vencimento:\n" + carne.getDataVencimento(), fonte));
             scel2 = new PdfPCell(new Paragraph("Pago em:\n____/____/______", fonte));
             scel1.setBorder(Rectangle.NO_BORDER);
             scel2.setBorder(Rectangle.NO_BORDER);
