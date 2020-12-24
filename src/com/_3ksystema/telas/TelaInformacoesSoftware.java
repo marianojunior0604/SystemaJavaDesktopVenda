@@ -5,6 +5,15 @@
  */
 package com._3ksystema.telas;
 
+import com._3ksystema.funcoes.FuncoesVenda;
+import com._3ksystema.modelos.Venda;
+import com._3ksystema.relatorios.GerarNotaVenda;
+import com.itextpdf.text.DocumentException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Mariano Junior
@@ -168,8 +177,10 @@ public class TelaInformacoesSoftware extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
 

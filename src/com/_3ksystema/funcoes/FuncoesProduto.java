@@ -28,6 +28,18 @@ public class FuncoesProduto {
     private ResultSet rs;
     
     public ResultSet listaProdutos() throws ClassNotFoundException{
+        String sql = "SELECT `nomeProduto` AS Nome, `marcaProduto` AS Marca, `valorVendaProduto` AS Preço, `qtdEstoqueProduto` AS Estoque FROM `dba.produtos` WHERE `qtdEstoqueProduto` > 0 ORDER BY `nomeProduto` ASC";
+        try {
+            conexao = mc.conector();
+            pst = conexao.prepareStatement(sql);
+            return pst.executeQuery();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: \n" + e + "Falha ao acessar o banco de dados", "Alerta", JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+    }
+    
+        public ResultSet listaTodosProdutos() throws ClassNotFoundException{
         String sql = "SELECT `nomeProduto` AS Nome, `marcaProduto` AS Marca, `valorVendaProduto` AS Preço, `qtdEstoqueProduto` AS Estoque FROM `dba.produtos` ORDER BY `nomeProduto` ASC";
         try {
             conexao = mc.conector();
@@ -97,7 +109,7 @@ public class FuncoesProduto {
         try {
             conexao = mc.conector();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, nomeProduto);
+            pst.setString(1, "%" + nomeProduto + "%");
             return pst.executeQuery();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error: \n" + e + "Falha ao acessar o banco de dados", "Alerta", JOptionPane.WARNING_MESSAGE);

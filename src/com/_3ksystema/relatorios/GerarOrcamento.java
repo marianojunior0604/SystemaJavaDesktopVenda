@@ -37,7 +37,7 @@ public class GerarOrcamento {
     private FormataData fd = new FormataData();
     private Produto produto = new Produto();
     private FuncoesProdutoVenda fpv = new FuncoesProdutoVenda();
-    DecimalFormat df = new DecimalFormat("#,###.00");
+    private DecimalFormat df = new DecimalFormat("#,###.00");
 
     public void gerarOrcamento(Cliente cliente, Empresa empresa, Venda venda, ArrayList<ProdutosVenda> produtosVenda) throws FileNotFoundException, DocumentException, IOException {
         Document documento = new Document();

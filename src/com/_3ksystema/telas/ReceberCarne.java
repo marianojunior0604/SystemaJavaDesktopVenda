@@ -23,14 +23,14 @@ import javax.swing.JOptionPane;
  */
 public class ReceberCarne extends javax.swing.JInternalFrame {
 
-    Carne carne = new Carne();
-    FuncaoCarne fcn = new FuncaoCarne();
-    Cliente cliente = new Cliente();
-    FuncoesCliente fc = new FuncoesCliente();
-    Venda venda = new Venda();
-    FuncoesVenda fv = new FuncoesVenda();
-    FormataData fd = new FormataData();
-    DecimalFormat df = new DecimalFormat("#,###.00");
+    private Carne carne = new Carne();
+    private FuncaoCarne fcn = new FuncaoCarne();
+    private Cliente cliente = new Cliente();
+    private FuncoesCliente fc = new FuncoesCliente();
+    private Venda venda = new Venda();
+    private FuncoesVenda fv = new FuncoesVenda();
+    private FormataData fd = new FormataData();
+    private DecimalFormat df = new DecimalFormat("#,###.00");
     
     /**
      * Creates new form ReceberCarne

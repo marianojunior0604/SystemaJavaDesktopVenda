@@ -76,7 +76,6 @@ public class TelaSaidaCaixa extends javax.swing.JInternalFrame {
 
     private void limpaCampos() {
         txtMotivo.setText("");
-        txtData.setText("");
         txtValor.setText("");
     }
 

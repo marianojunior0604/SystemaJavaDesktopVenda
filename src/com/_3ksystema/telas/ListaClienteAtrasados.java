@@ -7,6 +7,9 @@ package com._3ksystema.telas;
 
 import com._3ksystema.classes.FormataData;
 import com._3ksystema.funcoes.FuncaoCarne;
+import com._3ksystema.funcoes.FuncoesEmpresa;
+import com._3ksystema.modelos.Empresa;
+import java.sql.SQLException;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -15,16 +18,20 @@ import net.proteanit.sql.DbUtils;
  */
 public class ListaClienteAtrasados extends javax.swing.JInternalFrame {
     
-    FuncaoCarne fcn = new FuncaoCarne();
-    FormataData fd = new FormataData();
+    private FuncaoCarne fcn = new FuncaoCarne();
+    private FormataData fd = new FormataData();
+    private Empresa empresa = new Empresa();
+    private FuncoesEmpresa fe = new FuncoesEmpresa();
 
     /**
      * Creates new form ListaClienteAtrasados
      * @throws java.lang.ClassNotFoundException
      */
-    public ListaClienteAtrasados() throws ClassNotFoundException {
+    public ListaClienteAtrasados() throws ClassNotFoundException, SQLException {
         initComponents();
         listarClientesAtrasadors();
+        empresa = fe.pesquisaEmpresa();
+        lblNomeTela.setText("Listagem de clientes com parcelas atrasadas - " + empresa.getNomeEmpresa());
     }
 
     private void listarClientesAtrasadors() throws ClassNotFoundException{
@@ -40,7 +47,7 @@ public class ListaClienteAtrasados extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblNomeTela = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDevedores = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
@@ -50,9 +57,9 @@ public class ListaClienteAtrasados extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Relatório de clientes com parcelas atrasadas");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Listagem de clientes com parcelas atrasadas - Crediario São Jorge");
+        lblNomeTela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblNomeTela.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNomeTela.setText("Listagem de clientes com parcelas atrasadas - Crediario São Jorge");
 
         tblDevedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -82,7 +89,7 @@ public class ListaClienteAtrasados extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+                    .addComponent(lblNomeTela, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -96,7 +103,7 @@ public class ListaClienteAtrasados extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(lblNomeTela)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -113,9 +120,9 @@ public class ListaClienteAtrasados extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblNomeTela;
     private javax.swing.JTable tblDevedores;
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables

@@ -50,7 +50,7 @@ public class GerarCarneRetrato {
     private FuncoesEmpresa fep = new FuncoesEmpresa();
     
     //Carnê Jorge
-    /*
+    
     public void criaCarne(Venda venda) throws ClassNotFoundException, FileNotFoundException, DocumentException, IOException, SQLException {
         carnes = fcn.listaCarnes(venda.getIdVenda());
         cliente = fc.pesquisaClienteCodigo(venda.getCliente());
@@ -106,7 +106,7 @@ public class GerarCarneRetrato {
         documento.close();
         Desktop.getDesktop().open(new File(nomeCarne));
     }
-    */
+    
     //Carne Alcione
     /*
     public void criaCarne(Venda venda) throws ClassNotFoundException, FileNotFoundException, DocumentException, IOException, SQLException {
@@ -166,7 +166,7 @@ public class GerarCarneRetrato {
     }
     */
     //Carne Janseli
-    
+    /*
     public void criaCarne(Venda venda) throws ClassNotFoundException, FileNotFoundException, DocumentException, IOException, SQLException {
         carnes = fcn.listaCarnes(venda.getIdVenda());
         cliente = fc.pesquisaClienteCodigo(venda.getCliente());
@@ -232,7 +232,7 @@ public class GerarCarneRetrato {
         documento.close();
         Desktop.getDesktop().open(new File(nomeCarne));
     }
-
+    */
     //reimpressão Alcione
     /*
     public void reimprimirCarnes(int idCliente) throws ClassNotFoundException, FileNotFoundException, DocumentException, IOException, SQLException {
@@ -290,7 +290,7 @@ public class GerarCarneRetrato {
     }
     */
     //Reimpressão Jorge
-    /*
+    
     public void reimprimirCarnes(int idCliente) throws ClassNotFoundException, FileNotFoundException, DocumentException, IOException, SQLException {
         carnes = fcn.listaCarnesNPagos(idCliente);
         cliente = fc.pesquisaClienteCodigo(idCliente);
@@ -344,9 +344,9 @@ public class GerarCarneRetrato {
         documento.close();
         Desktop.getDesktop().open(new File(nomeCarne));
     }
-    */
-    //reimpressão Janseli
     
+    //reimpressão Janseli
+    /*
     public void reimprimirCarnes(int idCliente) throws ClassNotFoundException, FileNotFoundException, DocumentException, IOException, SQLException {
         carnes = fcn.listaCarnesNPagos(idCliente);
         cliente = fc.pesquisaClienteCodigo(idCliente);
@@ -412,6 +412,6 @@ public class GerarCarneRetrato {
         documento.close();
         Desktop.getDesktop().open(new File(nomeCarne));
     }
-    
+    */
 }
 

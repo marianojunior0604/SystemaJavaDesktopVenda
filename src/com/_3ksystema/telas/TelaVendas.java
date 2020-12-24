@@ -25,11 +25,13 @@ import com._3ksystema.modelos.ProdutosVenda;
 import com._3ksystema.modelos.Venda;
 import com._3ksystema.relatorios.GerarCarneRetrato;
 import com._3ksystema.relatorios.GerarContrato;
+import com._3ksystema.relatorios.GerarNotaVenda;
 import com._3ksystema.relatorios.GerarOrcamento;
 import com.itextpdf.text.DocumentException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,6 +66,8 @@ public class TelaVendas extends javax.swing.JInternalFrame {
     private Parcelas parcela = new Parcelas();
     private FuncoesParcelas fPar = new FuncoesParcelas();
     private String bloqueiaLetras = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"\\|!@#$%¨&*()_-+=§ª[{`´^~}]:;Çç";
+    private GerarNotaVenda gnv = new GerarNotaVenda();
+    private DecimalFormat df = new DecimalFormat("#,###.00");
 
     /**
      * Creates new form TelaVendas
@@ -133,10 +137,10 @@ public class TelaVendas extends javax.swing.JInternalFrame {
         ProdutoListaVenda plv = new ProdutoListaVenda();
         String qtdProd = JOptionPane.showInputDialog(null, "Digite a quantidade que o cliente ira comprar", "Quantidade da compra?", JOptionPane.PLAIN_MESSAGE);
         int qtdProdutosVendido = 0;
-        System.out.println(qtdProd);
+        //System.out.println(qtdProd);
+        double valorVenda = 0.0;
         if (qtdProd != null) {
             qtdProdutosVendido = Integer.parseInt(qtdProd);
-
             int codigoProduto;
             produto = fp.pesquisaProduto(tblProdutosLoja.getModel().getValueAt(tblProdutosLoja.getSelectedRow(), 0).toString());
             codigoProduto = produto.getIdProduto();
@@ -151,6 +155,11 @@ public class TelaVendas extends javax.swing.JInternalFrame {
                 plv.setPrecoTotal(produto.getValorVendaProduto(), qtdProdutosVendido);
                 prodVenda.add(plv);
                 pvtm.addProduto(plv);
+                for(ProdutoListaVenda pro : prodVenda){
+                    valorVenda += pro.getPrecoTotal();
+                }
+                //valorVenda += produto.getValorVendaProduto() * qtdProdutosVendido;
+                lblValorVenda.setText(String.valueOf(df.format(valorVenda)));
             } else {
                 JOptionPane.showMessageDialog(null, "A quantidade digitada é superior a quantidade em estoque", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -242,6 +251,8 @@ public class TelaVendas extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         btnFechaVenda = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        lblValorVenda = new javax.swing.JLabel();
 
         setTitle("Cadastro de vendas");
 
@@ -492,20 +503,29 @@ public class TelaVendas extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Valor total:");
+
+        lblValorVenda.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblValorVenda)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnFechaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -527,8 +547,11 @@ public class TelaVendas extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFechaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(btnFechaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblValorVenda)))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -598,10 +621,31 @@ public class TelaVendas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnFechaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFechaVendaActionPerformed
+        if (cliente.getId_Cliente() == 0) {
+            int cadastroRapido = JOptionPane.showConfirmDialog(null, "Nenhum cliente selecionado, \nDeseja fazer um cadastro rapido?", "Cadastro rapido", JOptionPane.YES_NO_OPTION);
+            if (cadastroRapido == JOptionPane.YES_OPTION) {
+                cliente.setNome_Cliente(JOptionPane.showInputDialog(null, "Digite o nome do Cliente."));
+                cliente.setRua_Casa_Cliente(JOptionPane.showInputDialog(null, "Digite o nome da rua do cliente."));
+                cliente.setNumero_Casa_Cliente(JOptionPane.showInputDialog(null, "Digite o numero da casa do cliente."));
+                cliente.setFone_Cliente("86" + JOptionPane.showInputDialog(null, "Digite o numero do telefone do cliente"));
+                try {
+                    fc.cadastraCliente(cliente);
+                    cliente = fc.pesquisaCliente(cliente.getNome_Cliente());
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Selecione um cliente na lista de clientes ou faça um cadastro rápido");
+            }
+        }
         if (cliente.getId_Cliente() != 0) {
             if (produtosVenda.size() != 0) {
                 try {
-                    venda.setCliente(selecionaClienteCompra().getId_Cliente());
+                    if (cliente.getId_Cliente() == 0) {
+                        venda.setCliente(selecionaClienteCompra().getId_Cliente());
+                    }else{
+                        venda.setCliente(cliente.getId_Cliente());
+                    }
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -628,7 +672,8 @@ public class TelaVendas extends javax.swing.JInternalFrame {
                             int entrada = JOptionPane.showConfirmDialog(null, "O cliente vai dar algum valor de entrada?", "Entrada", JOptionPane.YES_NO_OPTION);
                             if (entrada == JOptionPane.YES_OPTION) {
                                 String valor = JOptionPane.showInputDialog(null, "Quanto o cliente ira da de entrada", "Valor da Entrada", JOptionPane.QUESTION_MESSAGE);
-                                valorEntrada = Double.parseDouble(fn.ConverterFloat(valor));
+                                valorEntrada = Double.parseDouble(valor);
+                                venda.setValorEntrada(valorEntrada);
                             }
                             double percento = percentoJuros(Integer.parseInt(txtQtdParcelas.getText()));
                             double valorvenda = venda.getValorVenda() + (venda.getValorVenda() * (percento / 100));
@@ -657,6 +702,7 @@ public class TelaVendas extends javax.swing.JInternalFrame {
                             fv.diminuiQuantidade(produtosVenda1.getQtdProdutoVenda(), produto);
                         }
                         gct.gerarContrato(cliente, fep.pesquisaEmpresa(), venda);
+                        gnv.gerarNotavenda(venda, produtosVenda);
                         cliente = new Cliente();
                         venda = new Venda();
                         produtosVenda.clear();
@@ -665,6 +711,7 @@ public class TelaVendas extends javax.swing.JInternalFrame {
                         rbtAvista.isSelected();
                         txtQtdParcelas.setText("1");
                         txtQtdParcelas.setEditable(false);
+                        lblValorVenda.setText("");
                     } catch (ClassNotFoundException | SQLException | DocumentException | IOException ex) {
                         Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -672,9 +719,9 @@ public class TelaVendas extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Nenhum Produto adicionado na venda");
             }
-        } else {
+        } /*else {
             JOptionPane.showMessageDialog(null, "Nenhum Cliente selecionado");
-        }
+        }*/
     }//GEN-LAST:event_btnFechaVendaActionPerformed
 
     private void rbtAvistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtAvistaActionPerformed
@@ -718,12 +765,14 @@ public class TelaVendas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblValorVenda;
     private javax.swing.JRadioButton rbtAprazo;
     private javax.swing.JRadioButton rbtAvista;
     private javax.swing.ButtonGroup rbtFormaPagamento;

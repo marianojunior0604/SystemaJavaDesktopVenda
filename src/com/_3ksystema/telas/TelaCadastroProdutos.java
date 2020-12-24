@@ -44,7 +44,7 @@ public class TelaCadastroProdutos extends javax.swing.JInternalFrame {
     }
 
     private void preencherTabela() throws ClassNotFoundException {
-        tblProdutos.setModel(DbUtils.resultSetToTableModel(fp.listaProdutos()));
+        tblProdutos.setModel(DbUtils.resultSetToTableModel(fp.listaTodosProdutos()));
     }
 
     private void cadastraProduto() throws ClassNotFoundException {

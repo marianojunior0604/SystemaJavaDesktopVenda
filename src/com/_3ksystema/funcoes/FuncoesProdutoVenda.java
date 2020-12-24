@@ -57,6 +57,7 @@ public class FuncoesProdutoVenda {
             conexao = mc.conector();
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, idVenda);
+            System.out.println(pst);
             rs = pst.executeQuery();
             if (rs.next()) {
                 do {

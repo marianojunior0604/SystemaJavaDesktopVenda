@@ -9,6 +9,7 @@ import com._3ksystema.classes.FormataData;
 import com._3ksystema.dal.ModuloConector;
 import com._3ksystema.modelos.Carne;
 import com._3ksystema.modelos.Cliente;
+import com._3ksystema.modelos.Entradas;
 import com._3ksystema.modelos.Venda;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,17 +37,20 @@ public class FuncaoCarne {
     //private LocalDate data;// = LocalDate.now();
     private DateTimeFormatter formatDateBar = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private Carne carne = new Carne();
-    private Venda venda;
-    private Cliente cliente;
+    private Entradas entrada = new Entradas();
+    private FuncoesEntrada fe = new FuncoesEntrada();
+    //private Venda venda;
+    private Cliente cliente = new Cliente();
 
     public void criarCarnes(Venda venda) throws ClassNotFoundException {
         String sql = "INSERT INTO `dba.carne`(`qtdParcelas`, `valorParcela`, `dataVencimento`, `dba.venda_idVenda`, `dba.clientes_id_cliente`, `statusParcela`) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             conexao = mc.conector();
             pst = conexao.prepareStatement(sql);
-            cliente = fc.pesquisaClienteCodigo(venda.getCliente());
+            //cliente = fc.pesquisaClienteCodigo(venda.getCliente());
             double valorDividido = venda.getValorVenda() - venda.getValorEntrada();
-            //System.out.println("Valor da Venda: " + venda.getValorVenda() + "\nValor da Entrada: " + venda.getValorEntrada());
+            //System.out.println(valorDividido);
+            System.out.println("Valor da Venda: " + venda.getValorVenda() + "\nValor da Entrada: " + venda.getValorEntrada());
             int nParcela = venda.getQtdParcelas();
             double valorParcela = valorDividido / nParcela;
             //System.out.println("Valor à ser Parceldo: " + valorDividido + "\nNumero de Parcelas: " + nParcela + "\nO Valor das parcelas: " + valorParcela);
@@ -119,6 +123,11 @@ public class FuncaoCarne {
     
     public void receberCarne(int idCarne, String dataPagamento) throws ClassNotFoundException{
         String sql = "UPDATE `dba.carne` SET `statusParcela` = true, `dataPagamento` = ? WHERE `idCarne` = ?";
+        carne = pesquisaCarne(idCarne);
+        cliente = fc.pesquisaClienteCodigo(carne.getIdCliente());
+        entrada.setNaturezaEntrada("Recebimento carnê " + cliente.getNome_Cliente());
+        entrada.setDataEntrada(dataPagamento);
+        entrada.setValorEntrada(carne.getValorParcela());
         try {
             conexao = mc.conector();
             pst = conexao.prepareStatement(sql);
@@ -127,6 +136,7 @@ public class FuncaoCarne {
             int atualizou = pst.executeUpdate();
             if (atualizou == 1) {
                 JOptionPane.showMessageDialog(null, "Pagamento Realizado com sucesso", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                fe.salvaEntrada(entrada);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error:\n" + e + "\nFalha ao acessar o banco de dados", "Alerta", JOptionPane.WARNING_MESSAGE);

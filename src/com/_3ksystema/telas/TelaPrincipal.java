@@ -7,17 +7,18 @@ package com._3ksystema.telas;
 
 import com._3ksystema.classes.FormataData;
 import com._3ksystema.funcoes.FuncoesCaixa;
-import com._3ksystema.funcoes.FuncoesCliente;
 import com._3ksystema.funcoes.FuncoesEmpresa;
+import com._3ksystema.funcoes.FuncoesProdutoVenda;
 import com._3ksystema.funcoes.FuncoesVenda;
 import com._3ksystema.modelos.Caixa;
-import com._3ksystema.modelos.Cliente;
 import com._3ksystema.modelos.Empresa;
+import com._3ksystema.modelos.ProdutosVenda;
 import com._3ksystema.modelos.Venda;
-import com._3ksystema.relatorios.GerarContrato;
+import com._3ksystema.relatorios.GerarNotaVenda;
 import com.itextpdf.text.DocumentException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -62,18 +63,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         desktopPainel.add(cc);
     }
 
-    private void relatorioVendaPeriodo(){
+    private void relatorioVendaPeriodo() {
         RelatorioVendasPeriodo rvp = new RelatorioVendasPeriodo();
         rvp.setVisible(true);
         desktopPainel.add(rvp);
     }
-    
-    private void relatorioClientes() throws ClassNotFoundException{
+
+    private void relatorioClientes() throws ClassNotFoundException {
         HistoricoComprasCliente hcc = new HistoricoComprasCliente();
         hcc.setVisible(true);
         desktopPainel.add(hcc);
     }
-    
+
     private void cadastroProdutos() throws ClassNotFoundException {
         TelaCadastroProdutos tcp = new TelaCadastroProdutos();
         tcp.setVisible(true);
@@ -98,30 +99,36 @@ public class TelaPrincipal extends javax.swing.JFrame {
         desktopPainel.add(tec);
     }
 
-    private void cadastraSaida(){
+    private void cadastraSaida() {
         TelaSaidaCaixa tsc = new TelaSaidaCaixa();
         tsc.setVisible(true);
         desktopPainel.add(tsc);
     }
-    
+
     private void receberCarne() {
         ReceberCarne rc = new ReceberCarne();
         rc.setVisible(true);
         desktopPainel.add(rc);
     }
 
-    private void listaClientesAtrasados() throws ClassNotFoundException {
+    private void vendaRapida(){
+        TelaVendasRapidas tvr = new TelaVendasRapidas();
+        tvr.setVisible(true);
+        desktopPainel.add(tvr);
+    }
+    
+    private void listaClientesAtrasados() throws ClassNotFoundException, SQLException {
         ListaClienteAtrasados lca = new ListaClienteAtrasados();
         lca.setVisible(true);
         desktopPainel.add(lca);
     }
 
-    private void abrirCadastroEmpresa() throws ClassNotFoundException, SQLException{
+    private void abrirCadastroEmpresa() throws ClassNotFoundException, SQLException {
         TelaInformacoesEmpresa tie = new TelaInformacoesEmpresa();
         tie.setVisible(true);
         desktopPainel.add(tie);
     }
-    
+
     private void verificaUltimoCaixa() throws ClassNotFoundException, SQLException {
         cx = fcx.pegaUltimoCaixa();
         String dataHoje = fd.dataSQL();
@@ -140,35 +147,36 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    private void abreDeletaVenda(){
+    private void abreDeletaVenda() {
         DeletaVenda dv = new DeletaVenda();
         dv.setVisible(true);
         desktopPainel.add(dv);
     }
-    
-    private void backupDB() throws ClassNotFoundException, SQLException{
+
+    private void backupDB() throws ClassNotFoundException, SQLException {
         TelaFazBackup taefc = new TelaFazBackup();
         taefc.setVisible(true);
         desktopPainel.add(taefc);
     }
-    
+
     private void mostraInformacoes() {
         FormInformacoes fi = new FormInformacoes();
         fi.setVisible(true);
         desktopPainel.add(fi);
     }
 
-    private void reimprimeCarnes(){
+    private void reimprimeCarnes() {
         ReimprimiBoletos rb = new ReimprimiBoletos();
         rb.setVisible(true);
         desktopPainel.add(rb);
     }
-    
-    private void cadastrarUsuario(){
+
+    private void cadastrarUsuario() {
         TelaCadastraUsuarios tcu = new TelaCadastraUsuarios();
         tcu.setVisible(true);
         desktopPainel.add(tcu);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -182,6 +190,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         btnCadastroClientes = new javax.swing.JButton();
         btnCadastraProduto = new javax.swing.JButton();
         btnVenda = new javax.swing.JButton();
+        btnVendaRapida = new javax.swing.JButton();
         desktopPainel = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -218,6 +227,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
 
         btnCadastraProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/_3ksystema/icones/produtos.png"))); // NOI18N
+        btnCadastraProduto.setToolTipText("Cadastrar Produtos");
         btnCadastraProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCadastraProdutoActionPerformed(evt);
@@ -225,9 +235,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
 
         btnVenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/_3ksystema/icones/venda.png"))); // NOI18N
+        btnVenda.setToolTipText("Vendas Grandes");
         btnVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVendaActionPerformed(evt);
+            }
+        });
+
+        btnVendaRapida.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/_3ksystema/icones/fast.png"))); // NOI18N
+        btnVendaRapida.setToolTipText("Vendas Rapidas");
+        btnVendaRapida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVendaRapidaActionPerformed(evt);
             }
         });
 
@@ -243,7 +262,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                             .addComponent(btnCadastroClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnCadastraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(btnVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(btnVendaRapida, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -255,7 +275,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(btnCadastraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnVendaRapida, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout desktopPainelLayout = new javax.swing.GroupLayout(desktopPainel);
@@ -484,8 +506,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         try {
-            // TODO add your handling code here:
-            listaClientesAtrasados();
+            try {
+                // TODO add your handling code here:
+                listaClientesAtrasados();
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -493,13 +519,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
-        GerarContrato gc = new GerarContrato();
-        Cliente cliente = new Cliente();
-        FuncoesCliente fc = new FuncoesCliente();
+        Venda venda = new Venda();
+        FuncoesVenda fv = new FuncoesVenda();
+        FuncoesProdutoVenda fpv = new FuncoesProdutoVenda();
+        ArrayList<ProdutosVenda> produtosVenda = new ArrayList();
         try {
-            cliente = fc.pesquisaClienteCodigo(1);
-            gc.gerarContrato(cliente, empresa, venda);
-        } catch (ClassNotFoundException | DocumentException | IOException ex) {
+            venda = fv.buscaVendaId(47);
+            produtosVenda = fpv.pesquisaProdutosVenda(47);
+            GerarNotaVenda gnv = new GerarNotaVenda();
+            gnv.gerarNotavenda(venda, produtosVenda);
+            System.out.println(venda.getDataVenda());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaInformacoesSoftware.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | DocumentException | IOException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
@@ -556,6 +588,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         abreDeletaVenda();
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
+    private void btnVendaRapidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendaRapidaActionPerformed
+        // TODO add your handling code here:
+        vendaRapida();
+    }//GEN-LAST:event_btnVendaRapidaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -599,6 +636,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public javax.swing.JButton btnCadastraProduto;
     public javax.swing.JButton btnCadastroClientes;
     public javax.swing.JButton btnVenda;
+    public javax.swing.JButton btnVendaRapida;
     public javax.swing.JDesktopPane desktopPainel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
