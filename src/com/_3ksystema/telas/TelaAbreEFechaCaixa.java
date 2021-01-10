@@ -5,8 +5,10 @@
  */
 package com._3ksystema.telas;
 
+import com._3ksystema.classes.EntradasTableModel;
 import com._3ksystema.classes.FormataData;
 import com._3ksystema.classes.FormataNumeros;
+import com._3ksystema.classes.SaidasTableModel;
 import com._3ksystema.funcoes.FuncoesCaixa;
 import com._3ksystema.funcoes.FuncoesEntrada;
 import com._3ksystema.funcoes.FuncoesSaida;
@@ -14,6 +16,7 @@ import com._3ksystema.modelos.Caixa;
 import com._3ksystema.modelos.Entradas;
 import com._3ksystema.modelos.Saidas;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,24 +29,27 @@ import net.proteanit.sql.DbUtils;
  */
 public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
 
-    Caixa cx = new Caixa();
-    FuncoesCaixa fc = new FuncoesCaixa();
-    FuncoesSaida fs = new FuncoesSaida();
-    FuncoesEntrada fe = new FuncoesEntrada();
-    FormataData fd = new FormataData();
-    FormataNumeros fn = new FormataNumeros();
-    TelaPrincipal tp;
-    ArrayList<Saidas> saidas = new ArrayList();
-    ArrayList<Entradas> entradas = new ArrayList();
+    private Caixa cx = new Caixa();
+    private Saidas saida = new Saidas();
+    private FuncoesCaixa fc = new FuncoesCaixa();
+    private FuncoesSaida fs = new FuncoesSaida();
+    private FuncoesEntrada fe = new FuncoesEntrada();
+    private FormataData fd = new FormataData();
+    private FormataNumeros fn = new FormataNumeros();
+    private TelaPrincipal tp;
+    private DecimalFormat df = new DecimalFormat("#,###.00");
+    private ArrayList<Saidas> saidas = new ArrayList();
+    private ArrayList<Entradas> entradas = new ArrayList();
+    private EntradasTableModel etm = new EntradasTableModel();
+    private SaidasTableModel stm = new SaidasTableModel();
+    
     /**
      * Creates new form TelaAbreEFechaCaixa
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
      */
     public TelaAbreEFechaCaixa() throws ClassNotFoundException, SQLException {
-        this.tp = new TelaPrincipal();
         initComponents();
-        //System.out.println(fd.dataAtualBr());
         txtDataCaixa.setText(fd.dataAtualBr());
         tblListaCaixas.setModel(DbUtils.resultSetToTableModel(fc.listaCaixas()));
         
@@ -76,9 +82,9 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
         cx = fc.pesquisaCaixa(fd.dataAtualBr());
         double valorEmCaixa = (cx.getValorAbertura() + valorEntrada) - valorSaida;
         int confirmaFechamento = JOptionPane.showConfirmDialog(null, "O Caixa do dia " + fd.dataAtualBr() + 
-                "\nAberto com o valor: " + cx.getValorAbertura() + "R$\nCom o arrecadado diário de: " + valorEntrada +
-                "R$\nCom o pagamento diário de: " + valorSaida + "R$\nE um total liquido de: R$ " +
-                valorEmCaixa, "Confirmação de dados", JOptionPane.YES_NO_OPTION);
+                "\nAberto com o valor: R$ " + df.format(cx.getValorAbertura()) + "\nCom o arrecadado diário de: R$ " + df.format(valorEntrada) +
+                "\nCom o pagamento diário de: R$ " + df.format(valorSaida) + "\nE um total liquido de: R$ " +
+                df.format(valorEmCaixa), "Confirmação de dados", JOptionPane.YES_NO_OPTION);
         if (confirmaFechamento == JOptionPane.YES_OPTION) {
             txtDataCaixa.setText(cx.getNomeCaixa());
             txtValorAbertura.setText(fn.FloatConvertido(String.valueOf(cx.getValorAbertura())));
@@ -86,6 +92,10 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
             cx.setValorFechamento(valorEmCaixa);
             fc.atualizaCaixa(cx);
         }
+    }
+    
+    private void pesquisaData(){
+        
     }
     
     /**
@@ -98,6 +108,8 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jpaCaixa = new javax.swing.JTabbedPane();
+        panCaixa = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblListaCaixas = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -113,6 +125,14 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
         btnFecharCaixa = new javax.swing.JButton();
         btnAbrirCaixa = new javax.swing.JButton();
         btnPesquisaCaixa = new javax.swing.JButton();
+        panEntradas = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblEntradasDetalhadas = new javax.swing.JTable();
+        panSaidas = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblSaidasDetalhadas = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
 
         setTitle("Abrir e Fechar Caixa");
 
@@ -131,6 +151,11 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblListaCaixas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblListaCaixasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblListaCaixas);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
@@ -237,6 +262,124 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
         btnPesquisaCaixa.setText("Pesquisar");
         btnPesquisaCaixa.setPreferredSize(new java.awt.Dimension(110, 30));
 
+        javax.swing.GroupLayout panCaixaLayout = new javax.swing.GroupLayout(panCaixa);
+        panCaixa.setLayout(panCaixaLayout);
+        panCaixaLayout.setHorizontalGroup(
+            panCaixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panCaixaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panCaixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panCaixaLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPesquisaCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAbrirCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFecharCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(37, 37, 37))
+        );
+        panCaixaLayout.setVerticalGroup(
+            panCaixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panCaixaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panCaixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFecharCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAbrirCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisaCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jpaCaixa.addTab("Caixas", panCaixa);
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Entradas Detalhadas");
+
+        tblEntradasDetalhadas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblEntradasDetalhadas);
+
+        javax.swing.GroupLayout panEntradasLayout = new javax.swing.GroupLayout(panEntradas);
+        panEntradas.setLayout(panEntradasLayout);
+        panEntradasLayout.setHorizontalGroup(
+            panEntradasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panEntradasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panEntradasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panEntradasLayout.setVerticalGroup(
+            panEntradasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panEntradasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jpaCaixa.addTab("Entradas", panEntradas);
+
+        tblSaidasDetalhadas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tblSaidasDetalhadas);
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Saidas Detalhadas");
+
+        javax.swing.GroupLayout panSaidasLayout = new javax.swing.GroupLayout(panSaidas);
+        panSaidas.setLayout(panSaidasLayout);
+        panSaidasLayout.setHorizontalGroup(
+            panSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panSaidasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panSaidasLayout.setVerticalGroup(
+            panSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panSaidasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+                .addGap(14, 14, 14))
+        );
+
+        jpaCaixa.addTab("Saidas", panSaidas);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -245,17 +388,9 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnPesquisaCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAbrirCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnFecharCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpaCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -264,16 +399,8 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFecharCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAbrirCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPesquisaCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addComponent(jpaCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -304,6 +431,23 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnFecharCaixaActionPerformed
 
+    private void tblListaCaixasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListaCaixasMouseClicked
+        // TODO add your handling code here:
+        String data = tblListaCaixas.getModel().getValueAt(tblListaCaixas.getSelectedRow(), 0).toString();
+        data = fd.formataData(data);
+        try {
+            saidas = fs.saidasDia(data);
+            entradas = fe.entradasDoDia(data);
+            stm.setLinhas(saidas);
+            etm.setLinhas(entradas);
+            tblEntradasDetalhadas.setModel(etm);
+            tblSaidasDetalhadas.setModel(stm);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaAbreEFechaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //System.out.println(data);
+    }//GEN-LAST:event_tblListaCaixasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbrirCaixa;
@@ -315,9 +459,19 @@ public class TelaAbreEFechaCaixa extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jpaCaixa;
+    private javax.swing.JPanel panCaixa;
+    private javax.swing.JPanel panEntradas;
+    private javax.swing.JPanel panSaidas;
+    private javax.swing.JTable tblEntradasDetalhadas;
     private javax.swing.JTable tblListaCaixas;
+    private javax.swing.JTable tblSaidasDetalhadas;
     private javax.swing.JTextField txtDataCaixa;
     private javax.swing.JFormattedTextField txtNomeDataPesquisa;
     private javax.swing.JTextField txtValorAbertura;

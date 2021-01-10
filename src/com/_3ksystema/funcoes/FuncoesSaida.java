@@ -5,6 +5,7 @@
  */
 package com._3ksystema.funcoes;
 
+import com._3ksystema.classes.FormataData;
 import com._3ksystema.dal.ModuloConector;
 import com._3ksystema.modelos.Caixa;
 import com._3ksystema.modelos.Saidas;
@@ -29,6 +30,7 @@ public class FuncoesSaida {
     private Caixa caixa = new Caixa();
     private FuncoesCaixa fc;
     private ArrayList<Saidas> saidas = new ArrayList();
+    private FormataData fd = new FormataData();
     
     public void salvaSaida(Saidas sd) throws ClassNotFoundException{
         String sql = "INSERT INTO `dba.saida`(`naturezaSaida`, `dataSaida`, `valorSaida`) VALUES (?, ?, ?)";
@@ -140,7 +142,7 @@ public class FuncoesSaida {
                     Saidas exit = new Saidas();
                     exit.setIdSaida(rs.getInt(1));
                     exit.setNaturezaSaida(rs.getString(2));
-                    exit.setDataSaida(rs.getString(3));
+                    exit.setDataSaida(fd.dataBr(rs.getString(3)));
                     exit.setValorSaida(rs.getDouble(4));
                     saidas.add(exit);
                 } while (rs.next());

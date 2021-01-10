@@ -5,6 +5,7 @@
  */
 package com._3ksystema.funcoes;
 
+import com._3ksystema.classes.FormataData;
 import com._3ksystema.dal.ModuloConector;
 import com._3ksystema.modelos.Entradas;
 import java.sql.Connection;
@@ -26,7 +27,8 @@ public class FuncoesEntrada {
     private ResultSet rs;
     private Entradas entrada = new Entradas();
     private ArrayList<Entradas> entradas = new ArrayList();
-    private FuncoesCaixa fc;
+    private FuncoesCaixa fc = new FuncoesCaixa();
+    private FormataData fd = new FormataData();
     
     public Entradas pesquisaEntrada(String motivoEntrada) throws ClassNotFoundException{
         String sql = "SELECT * FROM `dba.entrada` WHERE `naturezaEntrada` = ?";
@@ -166,7 +168,7 @@ public class FuncoesEntrada {
                     Entradas enter = new Entradas();
                     enter.setIdEntrada(rs.getInt(1));
                     enter.setNaturezaEntrada(rs.getString(2));
-                    enter.setDataEntrada(rs.getString(3));
+                    enter.setDataEntrada(fd.dataBr(rs.getString(3)));
                     enter.setValorEntrada(rs.getDouble(4));
                     entradas.add(enter);
                 } while (rs.next());

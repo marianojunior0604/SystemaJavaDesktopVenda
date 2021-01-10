@@ -54,6 +54,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         //verificaUltimoCaixa();
         venda = fv.buscaVendaId(2);
         empresa = fe.pesquisaEmpresa();
+        //btnVendaRapida.setVisible(false);
         this.setTitle("Tela Principal - " + empresa.getNomeEmpresa());
     }
 
@@ -637,7 +638,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public javax.swing.JButton btnCadastroClientes;
     public javax.swing.JButton btnVenda;
     public javax.swing.JButton btnVendaRapida;
-    public javax.swing.JDesktopPane desktopPainel;
+    public static javax.swing.JDesktopPane desktopPainel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
