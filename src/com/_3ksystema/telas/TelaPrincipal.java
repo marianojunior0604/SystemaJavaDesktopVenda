@@ -54,7 +54,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         //verificaUltimoCaixa();
         venda = fv.buscaVendaId(2);
         empresa = fe.pesquisaEmpresa();
-        //btnVendaRapida.setVisible(false);
+        btnVendaRapida.setVisible(true);
         this.setTitle("Tela Principal - " + empresa.getNomeEmpresa());
     }
 

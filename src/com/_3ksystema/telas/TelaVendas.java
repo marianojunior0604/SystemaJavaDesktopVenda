@@ -192,7 +192,7 @@ public class TelaVendas extends javax.swing.JInternalFrame {
         if (tpVend.equals("AV")) {
             int desconto = JOptionPane.showConfirmDialog(null, "O cliente terá algum desconto?", "Desconto?", JOptionPane.YES_NO_OPTION);
             if (desconto == JOptionPane.YES_OPTION) {
-                String percento = JOptionPane.showInputDialog(null, "Quantos % de desconto?", "Desconto", JOptionPane.QUESTION_MESSAGE);
+                String percento = fn.ConverterFloat(JOptionPane.showInputDialog(null, "Quantos % de desconto?", "Desconto", JOptionPane.QUESTION_MESSAGE));
                 double desc = Double.parseDouble(percento);
                 valorVenda = valorVenda - (valorVenda * (desc / 100));
                 venda.setValorEntrada(valorVenda);

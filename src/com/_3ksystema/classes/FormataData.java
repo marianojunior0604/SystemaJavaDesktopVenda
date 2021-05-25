@@ -6,9 +6,11 @@
 package com._3ksystema.classes;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -17,6 +19,7 @@ import java.util.Date;
 public class FormataData {
 
     private Calendar data = Calendar.getInstance();
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private int dia = data.get(Calendar.DAY_OF_MONTH);
     private int mes = data.get(Calendar.MONTH);
     private int ano = data.get(Calendar.YEAR);
@@ -59,5 +62,12 @@ public class FormataData {
     public String dataExtenso() {
         DateFormat formato = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy");
         return formato.format(new Date());
+    }
+    
+    public long calculaJuros(String dataVencimento, String dataAtual) throws ParseException{
+        Date dataVenc = sdf.parse(dataBr(dataVencimento));
+        Date dataAtua = sdf.parse(dataAtual);
+        long tempoMili = Math.abs(dataVenc.getTime() - dataAtua.getTime());
+        return TimeUnit.DAYS.convert(tempoMili, TimeUnit.MILLISECONDS);
     }
 }

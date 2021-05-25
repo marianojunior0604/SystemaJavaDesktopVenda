@@ -13,6 +13,7 @@ import com._3ksystema.modelos.Carne;
 import com._3ksystema.modelos.Cliente;
 import com._3ksystema.modelos.Venda;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -51,6 +52,14 @@ public class ReceberCarne extends javax.swing.JInternalFrame {
         lblVencimento.setText(fd.dataBr(carne.getDataVencimento()));
         lblValor.setText(String.valueOf(df.format(carne.getValorParcela())));
         }
+        
+    }
+    
+    private void calculaJurosCarne() throws ParseException{
+        double valorJuros = 0.15;
+        long qtdDias = fd.calculaJuros(carne.getDataPagamento(), fd.dataAtualBr());
+        System.out.println("Data de Pagamento: " + carne.getDataPagamento() + "\nData atual: " + fd.dataAtualBr());
+        System.out.println("O total de dias de vencimento" + qtdDias + "\nO valor do juros é: " + (qtdDias * valorJuros));
         
     }
     
@@ -227,7 +236,12 @@ public class ReceberCarne extends javax.swing.JInternalFrame {
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
         try {
-            // TODO add your handling code here:
+            /*try {
+                // TODO add your handling code here:
+                calculaJurosCarne();
+            } catch (ParseException ex) {
+                Logger.getLogger(ReceberCarne.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
             pagarCarne();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ReceberCarne.class.getName()).log(Level.SEVERE, null, ex);
